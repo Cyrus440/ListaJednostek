@@ -15,6 +15,27 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
+    QSqlDatabase dane;
+    void connClose()
+    {
+        dane.close();
+        dane.removeDatabase(QSqlDatabase::defaultConnection);
+    }
+    bool connOpen()
+    {
+        dane =QSqlDatabase::addDatabase("QSQLITE");
+        dane.setDatabaseName("C:/Projekty/Bazadanych/statystyki.db");
+        if(!dane.open()){
+            qDebug()<<("Nie udalo sie otworzyc bazy danych");
+            return false;
+        }
+        else{
+            qDebug()<<("Otwarta baza danych");
+            return true;
+            }
+    }
+
+public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
@@ -23,6 +44,6 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    QSqlDatabase dane;
+
 };
 #endif // MAINWINDOW_H
